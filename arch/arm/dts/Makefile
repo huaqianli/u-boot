@@ -1316,7 +1316,10 @@ dtb-$(CONFIG_SOC_K3_AM654) += \
 	k3-am6548-iot2050-advanced-pg2.dtb \
 	k3-am6548-iot2050-advanced-m2.dtb \
 	k3-am6548-iot2050-advanced-m2-bkey-usb3-overlay.dtbo \
-	k3-am6548-iot2050-advanced-m2-bkey-ekey-pcie-overlay.dtbo
+	k3-am6548-iot2050-advanced-m2-bkey-ekey-pcie-overlay.dtbo \
+	k3-am6548-iot2050-advanced-sm.dtb \
+	k3-am6548-iot2050-advanced-sm-mpcie-none-hs-overlay.dtbo
+
 dtb-$(CONFIG_SOC_K3_J721E) += k3-j721e-common-proc-board.dtb \
 			      k3-j721e-r5-common-proc-board.dtb \
 			      k3-j7200-common-proc-board.dtb \

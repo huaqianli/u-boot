@@ -1,0 +1,21 @@
+// SPDX-License-Identifier: GPL-2.0
+/*
+ * IOT2050-SM variant, overlay for no PCIE nor USB on miniPCIE connector
+ * Copyright (c) Siemens AG, 2023
+ *
+ * Authors:
+ *   Baocheng Su <baocheng.su@siemens.com>
+ */
+
+/dts-v1/;
+/plugin/;
+
+#include <dt-bindings/phy/phy.h>
+
+&serdes0 {
+	status = "disabled";
+};
+
+&pcie0_rc {
+	status = "disabled";
+};

@@ -229,7 +229,7 @@
 		};
 
 		fit@380000 {
-			fit,fdt-list-val = "k3-am6528-iot2050-basic-pg2", "k3-am6548-iot2050-advanced-pg2", "k3-am6548-iot2050-advanced-m2";
+			fit,fdt-list-val = "k3-am6528-iot2050-basic-pg2", "k3-am6548-iot2050-advanced-pg2", "k3-am6548-iot2050-advanced-m2", "k3-am6548-iot2050-advanced-sm";
 
 			images {
 				bkey-usb3-overlay {
@@ -259,6 +259,20 @@
 						algo = "sha256";
 					};
 				};
+
+				mpcie-nohs-overlay {
+					description = "SM-miniPCE-no-high-speed-overlay";
+					type = "blob";
+					load = <0x82120000>;
+					arch = "arm64";
+					compression = "none";
+					blob-ext {
+						filename = "k3-am6548-iot2050-advanced-sm-mpcie-none-hs-overlay.dtbo";
+					};
+					hash {
+						algo = "sha256";
+					};
+				};
 			};
 
 			configurations {
@@ -269,7 +283,8 @@
 						"k3-rti-wdt-firmware",
 #endif
 						"bkey-usb3-overlay",
-						"bkey-ekey-pcie-overlay";
+						"bkey-ekey-pcie-overlay",
+						"mpcie-nohs-overlay";
 				};
 			};
 		};
