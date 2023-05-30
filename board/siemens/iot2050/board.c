@@ -25,27 +25,29 @@
 #include <asm/gpio.h>
 #include <asm/io.h>
 
-#define IOT2050_INFO_MAGIC		0x20502050
+#include "../../../../drivers/sysinfo/iot2050.h"
 
-struct iot2050_info {
-	u32 magic;
-	u16 size;
-	char name[20 + 1];
-	char serial[16 + 1];
-	char mlfb[18 + 1];
-	char uuid[32 + 1];
-	char a5e[18 + 1];
-	u8 mac_addr_cnt;
-	u8 mac_addr[8][ARP_HLEN];
-	char seboot_version[40 + 1];
-	u32 ddr_size_mb;
-};
+// #define IOT2050_INFO_MAGIC		0x20502050
+
+//struct iot2050_info {
+//	u32 magic;
+//	u16 size;
+//	char name[20 + 1];
+//	char serial[16 + 1];
+//	char mlfb[18 + 1];
+//	char uuid[32 + 1];
+//	char a5e[18 + 1];
+//	u8 mac_addr_cnt;
+//	u8 mac_addr[8][ARP_HLEN];
+//	char seboot_version[40 + 1];
+//	u32 ddr_size_mb;
+//};
 
 /*
  * Scratch SRAM (available before DDR RAM) contains extracted EEPROM data.
  */
-#define IOT2050_INFO_DATA ((struct iot2050_info *) \
-			     TI_SRAM_SCRATCH_BOARD_EEPROM_START)
+// #define IOT2050_INFO_DATA ((struct iot2050_info *) \
+// 			     TI_SRAM_SCRATCH_BOARD_EEPROM_START)
 
 DECLARE_GLOBAL_DATA_PTR;
 
@@ -157,35 +159,99 @@ static void set_pinvalue(const char *gpio_name, const char *label, int value)
 
 static bool board_is_advanced(void)
 {
-	struct iot2050_info *info = IOT2050_INFO_DATA;
+	//struct iot2050_info *info = IOT2050_INFO_DATA;
 
-	return info->magic == IOT2050_INFO_MAGIC &&
-		strstr((char *)info->name, "IOT2050-ADVANCED") != NULL;
+	//return info->magic == IOT2050_INFO_MAGIC &&
+	//	strstr((char *)info->name, "IOT2050-ADVANCED") != NULL;
+	struct udevice *sysinfo;
+	char buf[41];
+
+	if (sysinfo_get(&sysinfo)) {
+		pr_err("IOT2050: %s:%d: board_is_advanced: Could not find sysinfo device.\n", __func__, __LINE__);
+		return false;
+	}
+
+	if (sysinfo_detect(sysinfo)) {
+		pr_err("IOT2050: board_is_advanced: Board info parsing error!\n");
+		return false;
+	}
+
+	sysinfo_get_str(sysinfo, BOARD_NAME, 41, buf);
+	return strstr(buf, "IOT2050-ADVANCED") != NULL;
 }
 
 static bool board_is_pg1(void)
 {
-	struct iot2050_info *info = IOT2050_INFO_DATA;
+	//struct iot2050_info *info = IOT2050_INFO_DATA;
 
-	return info->magic == IOT2050_INFO_MAGIC &&
-		(strcmp((char *)info->name, "IOT2050-BASIC") == 0 ||
-		 strcmp((char *)info->name, "IOT2050-ADVANCED") == 0);
+	//return info->magic == IOT2050_INFO_MAGIC &&
+	//	(strcmp((char *)info->name, "IOT2050-BASIC") == 0 ||
+	//	 strcmp((char *)info->name, "IOT2050-ADVANCED") == 0);
+	struct udevice *sysinfo;
+	char buf[41];
+
+	if (sysinfo_get(&sysinfo)) {
+		pr_err("IOT2050: board_is_m2: Could not find sysinfo device.\n");
+		return false;
+	}
+
+	if (sysinfo_detect(sysinfo)) {
+		pr_err("IOT2050: board_is_m2: Board info parsing error!\n");
+		return false;
+	}
+
+	sysinfo_get_str(sysinfo, BOARD_NAME, 41, buf);
+
+	return strcmp(buf, "IOT2050-BASIC") == 0 || strcmp(buf, "IOT2050-ADVANCED") == 0;
 }
 
 static bool board_is_m2(void)
 {
-	struct iot2050_info *info = IOT2050_INFO_DATA;
+	//struct iot2050_info *info = IOT2050_INFO_DATA;
 
-	return info->magic == IOT2050_INFO_MAGIC &&
-		strcmp((char *)info->name, "IOT2050-ADVANCED-M2") == 0;
+	//return info->magic == IOT2050_INFO_MAGIC &&
+	//	strcmp((char *)info->name, "IOT2050-ADVANCED-M2") == 0;
+	struct udevice *sysinfo;
+	char buf[41];
+
+	if (sysinfo_get(&sysinfo)) {
+		pr_err("IOT2050: board_is_m2: Could not find sysinfo device.\n");
+		return false;
+	}
+
+	if (sysinfo_detect(sysinfo)) {
+		pr_err("IOT2050: board_is_m2: Board info parsing error!\n");
+		return false;
+	}
+
+	sysinfo_get_str(sysinfo, BOARD_NAME, 41, buf);
+
+	return strcmp(buf, "IOT2050-ADVANCED-M2") == 0;
 }
 
 static bool board_is_sm(void)
 {
-	struct iot2050_info *info = IOT2050_INFO_DATA;
+	//struct iot2050_info *info = IOT2050_INFO_DATA;
 
-	return info->magic == IOT2050_INFO_MAGIC &&
-		strcmp((char *)info->name, "IOT2050-ADVANCED-SM") == 0;
+	//return info->magic == IOT2050_INFO_MAGIC &&
+	//	strcmp((char *)info->name, "IOT2050-ADVANCED-SM") == 0;
+	struct udevice *sysinfo;
+	char buf[41];
+
+	if (sysinfo_get(&sysinfo)) {
+		pr_err("IOT2050: board_is_m2: Could not find sysinfo device.\n");
+		return false;
+	}
+
+	if (sysinfo_detect(sysinfo)) {
+		pr_err("IOT2050: board_is_m2: Board info parsing error!\n");
+		return false;
+	}
+
+	sysinfo_get_str(sysinfo, BOARD_NAME, 41, buf);
+
+	//return strcmp(buf, "IOT2050-ADVANCED-M2") == 0;
+	return strcmp(buf, "IOT2050-ADVANCED-SM") == 0;
 }
 
 static void remove_mmc1_target(void)
@@ -212,33 +278,46 @@ static void enable_pcie_connector_power(void)
 
 void set_board_info_env(void)
 {
-	struct iot2050_info *info = IOT2050_INFO_DATA;
+	struct udevice *sysinfo;
+	char buf[41];
 	u8 __maybe_unused mac_cnt;
 	const char *fdtfile;
 
-	if (info->magic != IOT2050_INFO_MAGIC) {
-		pr_err("IOT2050: Board info parsing error!\n");
+	if (sysinfo_get(&sysinfo)) {
+		pr_err("IOT2050: set_board_info_env: Could not find sysinfo device.\n");
+		return;
+	}
+
+	if (sysinfo_detect(sysinfo)) {
+		pr_err("IOT2050: set_board_info_env: Board info parsing error!\n");
 		return;
 	}
 
 	if (env_get("board_uuid"))
 		return;
 
-	env_set("board_name", info->name);
-	env_set("board_serial", info->serial);
-	env_set("mlfb", info->mlfb);
-	env_set("board_uuid", info->uuid);
-	env_set("board_a5e", info->a5e);
+	if (sysinfo_get_str(sysinfo, BOARD_NAME, 41, buf) == 0)
+		env_set("board_name", buf);
+	if (sysinfo_get_str(sysinfo, BOARD_SERIAL, 41, buf) == 0)
+		env_set("board_serial", buf);
+	if (sysinfo_get_str(sysinfo, BOARD_MLFB, 41, buf) == 0)
+		env_set("mlfb", buf);
+	if (sysinfo_get_str(sysinfo, BOARD_UUID, 41, buf) == 0)
+		env_set("board_uuid", buf);
+	if (sysinfo_get_str(sysinfo, BOARD_A5E, 41, buf) == 0)
+		env_set("board_a5e", buf);
+	if (sysinfo_get_str(sysinfo, BOARD_SEBOOT_VER, 41, buf) == 0)
+		env_set("seboot_version", buf);
 	env_set("fw_version", PLAIN_VERSION);
-	env_set("seboot_version", info->seboot_version);
 
 	if (IS_ENABLED(CONFIG_NET)) {
+		sysinfo_get_int(sysinfo, BOARD_MAC_ADDR_CNT, &mac_cnt);
 		/* set MAC addresses to ensure forwarding to the OS */
-		for (mac_cnt = 0; mac_cnt < info->mac_addr_cnt; mac_cnt++) {
-			if (is_valid_ethaddr(info->mac_addr[mac_cnt]))
-				eth_env_set_enetaddr_by_index("eth",
-							      mac_cnt + 1,
-							      info->mac_addr[mac_cnt]);
+		for (int i = 0; i < mac_cnt; i++) {
+			int j = BOARD_MAC_ADDR_START + i;
+			sysinfo_get_str(sysinfo, j, 41, buf);
+			if (is_valid_ethaddr(buf))
+				eth_env_set_enetaddr_by_index("eth", i + 1, buf);
 		}
 	}
 
@@ -401,14 +480,32 @@ int board_init(void)
 
 int dram_init(void)
 {
-	struct iot2050_info *info = IOT2050_INFO_DATA;
+	struct udevice *sysinfo;
+	char buf[10];
+
+	if (sysinfo_get(&sysinfo)) {
+		pr_err("IOT2050: board_is_m2: Could not find sysinfo device.\n");
+		return false;
+	}
+
+	if (sysinfo_detect(sysinfo)) {
+		pr_err("IOT2050: board_is_m2: Board info parsing error!\n");
+		return false;
+	}
+
+	sysinfo_get_str(sysinfo, BOARD_DDR_SIZE, 10, buf);
+
+    u32 ddr_size_mb = *((u32 *)buf);
+    pr_err("Lee: %s-%d: size = %d\n", __func__, __LINE__, ddr_size_mb);
+
+	//struct iot2050_info *info = IOT2050_INFO_DATA;
 #ifdef CONFIG_PHYS_64BIT
-	gd->ram_size = ((phys_size_t)(info->ddr_size_mb)) << 20;
+	gd->ram_size = ((phys_size_t)(ddr_size_mb)) << 20;
 #else
-	if (info->ddr_size_mb > 2048)
+	if (ddr_size_mb > 2048)
 		gd->ram_size = SZ_2G;
 	else
-		gd->ram_size = ((phys_size_t)(info->ddr_size_mb)) << 20;
+		gd->ram_size = ((phys_size_t)(ddr_size_mb)) << 20;
 #endif
 	return 0;
 }
@@ -452,18 +549,30 @@ int dram_init_banksize(void)
 #ifdef CONFIG_SPL_LOAD_FIT
 int board_fit_config_name_match(const char *name)
 {
-	struct iot2050_info *info = IOT2050_INFO_DATA;
+	struct udevice *sysinfo;
+	char buf[41];
 	char upper_name[32];
+
+	if (sysinfo_get(&sysinfo)) {
+		pr_err("IOT2050: board_fit_config_name_match: Could not find sysinfo device.\n");
+		return -1;
+	}
+
+	if (sysinfo_detect(sysinfo)) {
+		pr_err("IOT2050: board_fit_config_name_match: Board info parsing error!\n");
+		return -1;
+	}
+
+	sysinfo_get_str(sysinfo, BOARD_NAME, 41, buf);
 
 	/* skip the prefix "k3-am65x8-" */
 	name += 10;
 
-	if (info->magic != IOT2050_INFO_MAGIC ||
-	    strlen(name) >= sizeof(upper_name))
+	if (strlen(name) >= sizeof(upper_name))
 		return -1;
 
 	str_to_upper(name, upper_name, sizeof(upper_name));
-	if (!strcmp(upper_name, (char *)info->name))
+	if (!strcmp(upper_name, buf))
 		return 0;
 
 	return -1;

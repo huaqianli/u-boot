@@ -1,4 +1,8 @@
 # SPDX-License-Identifier: GPL-2.0+
+$(info this is start driver Makefile)
+$(info $$CONFIG_SYSINFO is [${CONFIG_SYSINFO}])
+$(info $$CONFIG_SPL_SYSINFO is [${CONFIG_SPL_SYSINFO}])
+$(info $$CONFIG_SYSINFO_IOT2050 is [${CONFIG_SYSINFO_IOT2050}])
 
 obj-$(CONFIG_$(SPL_TPL_)BIOSEMU) += bios_emulator/
 obj-$(CONFIG_$(SPL_TPL_)BLK) += block/

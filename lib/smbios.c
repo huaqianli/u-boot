@@ -475,6 +475,8 @@ ulong write_smbios_table(ulong addr)
 	int isize;
 	int i;
 
+	log_err("---Entering write_smbios_table\n");
+
 	ctx.node = ofnode_null();
 	if (IS_ENABLED(CONFIG_OF_CONTROL)) {
 		uclass_first_device(UCLASS_SYSINFO, &ctx.dev);
@@ -482,6 +484,10 @@ ulong write_smbios_table(ulong addr)
 			parent_node = dev_read_subnode(ctx.dev, "smbios");
 	} else {
 		ctx.dev = NULL;
+	}
+
+	if (ctx.dev == NULL) {
+		log_err("---ctx.dev is null\n");
 	}
 
 	/* 16 byte align the table address */

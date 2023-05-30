@@ -32,8 +32,11 @@ int __weak show_board_info(void)
 		if (IS_ENABLED(CONFIG_SYSINFO)) {
 			/* This might provide more detail */
 			ret = sysinfo_get(&dev);
+			printf("---show_board_info: %d\n", ret);
 			if (!ret) {
+				printf("---show_board_info: b4 sysinfo_detect\n");
 				ret = sysinfo_detect(dev);
+				printf("---show_board_info: after sysinfo_detect: %d\n", ret);
 				if (!ret) {
 					ret = sysinfo_get_str(dev,
 						      SYSINFO_ID_BOARD_MODEL,

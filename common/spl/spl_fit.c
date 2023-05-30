@@ -98,7 +98,9 @@ static int spl_fit_get_image_name(const struct spl_fit_info *ctx,
 		 * no string in the property for this index. Check if the
 		 * sysinfo-level code can supply one.
 		 */
+		printf("---spl_fit_get_image_name: b4 sysinfo_detect\n");
 		rc = sysinfo_detect(sysinfo);
+		printf("---spl_fit_get_image_name: after sysinfo_detect %d\n", rc);
 		if (rc)
 			return rc;
 

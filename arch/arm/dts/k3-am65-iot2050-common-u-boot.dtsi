@@ -14,6 +14,20 @@
 		spi0 = &ospi0;
 	};
 
+	/* TI_SRAM_SCRATCH_BOARD_EEPROM_START */
+	sysinfo {
+		compatible = "siemens,iot2050-sysinfo";
+		offset = <0x40280000>;
+		bootph-pre-ram;
+
+		smbios {
+			system {
+				manufacturer = "SIEMENS";
+				product = "SIMATIC IOT2050";
+			};
+		};
+	};
+
 	leds {
 		bootph-pre-ram;
 		status-led-red {
